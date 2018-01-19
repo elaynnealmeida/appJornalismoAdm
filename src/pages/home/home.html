@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Login</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="text" [(ngModel)]="professor.email"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label floating>Senha</ion-label>
+      <ion-input type="password" [(ngModel)]="professor.senha"></ion-input>
+    </ion-item>
+
+  </ion-list>
+  <div padding>
+    <button ion-button full (click)="login(professor)">Entrar</button>
+    <button ion-button full (click)="logout()">Sair</button>
+  </div>
+
+  <button ion-button secondary menuToggle>Toggle Menu</button>
+</ion-content>
