@@ -62,4 +62,12 @@ export class ServiceProvider {
   }).map((res: Response) => {return res.json();});
   }
 
+  alteraSenha(parans){
+    let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+    return this.http.post(this.url+"apiAlteraSenha.php",parans,
+  {headers:headers,
+  method:"POST"
+  }).map((res: Response) => {return res.json();});
+  }
+
 }

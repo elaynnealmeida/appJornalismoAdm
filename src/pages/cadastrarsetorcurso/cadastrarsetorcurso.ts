@@ -245,5 +245,7 @@ export class CadastrarsetorcursoPage implements OnInit {
     });
     prompt.present();
   }
-
+  ionViewCanEnter(){
+    return this.auth.userLogado();
+  }
 }

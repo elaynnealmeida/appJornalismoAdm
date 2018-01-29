@@ -35,6 +35,10 @@ export class CadastrouserPage implements OnInit {
     this.getSetores();
   }
 
+  ionViewCanEnter(){
+    return this.auth.userLogado();
+  }
+
   getSetores(){
     this.http.get(this.url2).subscribe((data:any )=>{
       data = JSON.parse(data['_body']);

@@ -2,18 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { Storage } from '@ionic/storage';
 import 'rxjs/add/operator/map';
 import { ToastController } from 'ionic-angular';
 import { AlertController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { AvisosProvider } from '../../providers/avisos/avisos';
-
-/**
- * Generated class for the AvisosPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -23,6 +17,7 @@ import { AvisosProvider } from '../../providers/avisos/avisos';
 export class AvisosPage implements OnInit {
   private url: string = 'http://localhost/apiPostaAviso.php';
   selectedItem: any;
+  public perfil1: any;
   icons: string[];
   private url2: string = 'http://localhost/apiRecuperaAviso.php';
   public avisos: Array<{}>;
@@ -42,9 +37,16 @@ export class AvisosPage implements OnInit {
     public toastCtrl: ToastController,
     public auth: AuthProvider,
     public avisoProvider: AvisosProvider,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public storage: Storage
   ) {
-
+    this.storage.get('login').then(val => {
+      if (val !== null) {
+        this.perfil1 = val;
+        this.perfil1 = this.perfil1.toString().replace('["', '');
+        this.perfil1 = this.perfil1.toString().replace('"]', '');
+      }
+    });
   }
 
   ngOnInit() {
@@ -55,21 +57,21 @@ export class AvisosPage implements OnInit {
     this.http.get(this.url2).subscribe((data: any) => {
       data = JSON.parse(data['_body']);
       this.avisos = data;
-      console.log(this.avisos);
+      //console.log(this.avisos);
     });
   }
 
-  /* ionViewCanEnter(){
-     return this.auth.userLogado();
-   }*/
+  ionViewCanEnter(){
+    return this.auth.userLogado();
+  }
 
   salvar(p) {
-    console.log("entrou no salvar aviso");
+    //console.log("entrou no salvar aviso");
     this.aviso.titulo = p.titulo;
     this.aviso.aviso = p.aviso;
     this.aviso.hora = this.myDate;
     this.aviso.data = this.myDate2;
-    this.aviso.usuario = 1;
+    this.aviso.usuario = this.perfil1;
     this.avisoProvider.postData(this.aviso)
       .subscribe((data: any) => {
         let toast = this.toastCtrl.create({

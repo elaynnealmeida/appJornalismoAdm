@@ -47,9 +47,9 @@ export class ListPage implements OnInit {
     });   
   }
 
- /* ionViewCanEnter(){
+  ionViewCanEnter(){
     return this.auth.userLogado();
-  }*/
+  }
 
   salvar(p) {
     this.service.postData(p)

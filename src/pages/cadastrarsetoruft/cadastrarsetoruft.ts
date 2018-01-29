@@ -185,5 +185,7 @@ export class CadastrarsetoruftPage implements OnInit {
     });
    
   }*/
-
+  ionViewCanEnter(){
+    return this.auth.userLogado();
+  }
 }

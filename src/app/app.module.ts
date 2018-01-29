@@ -19,6 +19,7 @@ import { AuthProvider } from '../providers/auth/auth';
 import { AvisosProvider } from '../providers/avisos/avisos';
 import { SetorcursoProvider } from '../providers/setorcurso/setorcurso';
 import { SetoruftProvider } from '../providers/setoruft/setoruft';
+import { PerfilPage } from '../pages/perfil/perfil';
 
 @NgModule({
   declarations: [
@@ -28,14 +29,15 @@ import { SetoruftProvider } from '../providers/setoruft/setoruft';
     AvisosPage,
     CadastrouserPage,
     CadastrarsetorcursoPage,
-    CadastrarsetoruftPage
+    CadastrarsetoruftPage,
+    PerfilPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot( {
       name: '__mydb',
-         driverOrder: ['indexeddb', 'sqlite', 'websql']
+         driverOrder: ['indexeddb']
     }),
     HttpModule
   ],
@@ -47,7 +49,8 @@ import { SetoruftProvider } from '../providers/setoruft/setoruft';
     AvisosPage,
     CadastrouserPage,
     CadastrarsetorcursoPage,
-    CadastrarsetoruftPage
+    CadastrarsetoruftPage,
+    PerfilPage
   ],
   providers: [
     StatusBar,

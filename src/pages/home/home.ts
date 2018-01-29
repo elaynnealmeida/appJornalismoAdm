@@ -2,68 +2,75 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth/auth';
 import { ToastController } from 'ionic-angular';
+import { AvisosPage } from '../avisos/avisos';
+import { Http, Response, ResponseOptions, Headers } from '@angular/http';
+import { Storage } from '@ionic/storage';
 
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
 })
 export class HomePage {
-  public professor = {
-    nome: "",
-    email: "",
-    senha: ""
-  };
+  /* public professor = {
+     nome: "",
+     email: "",
+     senha: ""
+   };*/
   public professor2: any = {
+    id: 0,
     nome: "",
     email: "",
     senha: ""
   };
 
-  private num: any;
+  private url: string = 'http://localhost/';
+  public perfil: any = [];
 
   constructor(public navCtrl: NavController,
+    public http: Http,
+    public storage: Storage,
     public navParams: NavParams,
     public auth: AuthProvider,
     public toastCtrl: ToastController) {
   }
 
   login(req) {
-    this.auth.login(req)
-    .subscribe((data:any )=>{
-      data = { console:console.log(JSON.parse(JSON.stringify(data))),
-        this:this.professor2=data             
-      },
-      err => console.log(JSON.parse(JSON.stringify(err)))     
-    });   
-    this.faz(); 
+
+    let headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+    this.http.post(this.url + "login.php", req,
+      {
+        headers: headers,
+        method: "POST"
+      }).map((res: Response) => { return res.json(); })
+      .subscribe(data => {
+       // console.log('data.length ' + data.length);
+        if (data.length > 2) {
+          this.storage.set('login', data);         
+          this.navCtrl.setRoot(AvisosPage);
+        }
+        else {
+          let toast = this.toastCtrl.create({
+            message: 'Login e/ou senha incorreto',
+            duration: 4000,
+            position: 'bottom'
+          });
+          toast.present();
+        }
+
+      });
   }
 
-  faz() {
-    console.log("data: " + this.professor2);
-    console.log("email: " + this.professor2.email);
-    if (this.num > 2) {
-      let toast = this.toastCtrl.create({
-        message: 'Logado',
-        duration: 4000
-      });
-      toast.present();
-    } else {
-      let toast = this.toastCtrl.create({
-        message: 'Usuário ou senha invalido',
-        duration: 4000
-      });
-      toast.present();
-    }
-  }
 
   alterarsenha() { }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
-  }
+
 
   logout() {
     this.auth.logout();
+  }
+
+  isUser() {
+    return this.auth.userLogado();
   }
 
 }
